@@ -3,16 +3,18 @@ from discord.ext import commands
 from discord import User
 import time, os, random
 
-#Insert your bot token here.
+# Insert your bot token here.
 TOKEN = ""
 
+# Setting the bot prefix
 client = commands.Bot(command_prefix = ".")
 
-
+# Setting the bot's "playing" status
 @client.event
 async def on_ready():
     await client.change_presence(activity=discord.Game(name='klemchri.de'))
 
+# Do I need to explain this?
 @client.event
 async def on_message(message):
     author = message.author
@@ -30,7 +32,7 @@ async def on_message(message):
     cid= str(channel.id)
     aid= str(author.id)
 
-    #Showing all messages on the Console for debug:
+    # Showing all messages on the console for debug purposes:
     if(int(author.id) == 578935647679807491):
         print("\n---[RESPONSE]---")
         print("Channel Name: " + cname + "\nChannel ID: " + cid + "\nTime: " + currentTime)
@@ -46,6 +48,7 @@ async def on_message(message):
 
     await client.process_commands(message)
 
+# .ping command - bot answers with pong
 @client.command()
 async def ping(ctx):
     message = ctx.message
@@ -55,14 +58,7 @@ async def ping(ctx):
     id = int(channel.id)
     await channel.send("{} Pong! :ping_pong:".format(author.mention))
 
-@client.command()
-async def printNameToConsole(ctx):
-    message = ctx.message
-    print("\n##########\nChimute Vampirism\n##########")
-    await message.channel.send("Done :white_check_mark:")
-
-
-
+# .accept command - sends the tagged user accepted message
 @client.command()
 async def accept(ctx, user: User):
     message = ctx.message
@@ -76,6 +72,7 @@ async def accept(ctx, user: User):
     else:
         await channel.send("This command is suposed to be used in the \"staff-forms\" Channel")
 
+# .reject command - sends the tagged user rejected message and reason, if given
 @client.command()
 async def reject(ctx, user: User, *args):
     message = ctx.message
@@ -99,6 +96,7 @@ async def reject(ctx, user: User, *args):
     else:
         await channel.send("This command is suposed to be used in the \"staff-forms\" Channel")
 
+# .ban command - bans the tagged user
 @client.command()
 async def ban(ctx, user: User):
     message = ctx.message
@@ -116,6 +114,7 @@ async def ban(ctx, user: User):
     if not(hasRole):
         await message.channel.send("You dont have the permission to do that.")
 
+# .kick command - kicks the tagged user
 @client.command()
 async def kick(ctx, user: User):
     message = ctx.message
@@ -133,9 +132,10 @@ async def kick(ctx, user: User):
     if not(hasRole):
         await message.channel.send("You dont have the permission to do that.")
 
+# .changePresence command - changes the bot's "playing" status via Discord
 @client.command()
 async def changePresence(ctx, *args):
-    if(int(ctx.message.author.id) == 152828946629525504): #Change to your ID
+    if(int(ctx.message.author.id) == 152828946629525504 or 267633670532104193)): # Change to your ID
         playing = ""
         for word in args:
             playing = playing + word
@@ -145,7 +145,16 @@ async def changePresence(ctx, *args):
 
 client.run(TOKEN)
 
-#Checking for roles - Testing for other commands
+
+# .printNameToConsole command - prints the bot's name to the console
+#@client.command()
+#async def printNameToConsole(ctx):
+#    message = ctx.message
+#    print("\n##########\nChimute Vampirism\n##########")
+#    await message.channel.send("Done :white_check_mark:")
+
+
+# Checking for roles - Testing for other commands
 #@client.command()
 #async def checkForRole(ctx, roleName):
 #    message = ctx.message
